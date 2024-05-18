@@ -1,0 +1,17 @@
+directories:
+  output: dist
+
+files:
+  - packages/**/dist/**
+
+extraResources:
+  - packages/main/src/prisma/**
+  - node_modules/.prisma/**
+  - node_modules/@prisma/client/**
+  - migration.bat
+win:
+  icon: buildResources\icon.png
+  target:
+    - target: nsis
+      arch:
+        - x64

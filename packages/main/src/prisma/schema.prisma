@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Record {
+  id              String      @id @default(uuid())
+  createdAt       DateTime    @default(now())
+  model           String
+  partId          String
+  fileName        String      @unique
+  excelFileBuffer Bytes
+  dataEntries     DataEntry[]
+  Images          Image[]
+  finishImport    Boolean     @default(false)
+}
+
+model DataEntry {
+  id                 String  @id @default(uuid())
+  recordId           String
+  robotName          String
+  position           String
+  weldingPoint       String
+  deepLearningResult String?
+  visionProResult    String?
+  overallResult      String?
+  record             Record  @relation(fields: [recordId], references: [id])
+}
+
+model Image {
+  id          String @id @default(uuid())
+  recordId    String
+  position    String
+  robotName   String
+  imageBuffer Bytes
+  record      Record @relation(fields: [recordId], references: [id])
+}
+
+model setting {
+  id        String   @id @default(uuid())
+  recordDir String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
